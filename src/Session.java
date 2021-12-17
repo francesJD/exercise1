@@ -2,29 +2,34 @@ import java.util.*;
 
 public class Session {
     int[] avgQuizScore;
-    Map<String, int[]> allQuizScore = new HashMap<>();
+    // Create a HashMap to store all quiz scores
+    Map<String, int[]> allQuizScores = new HashMap<>();
+    // Create a HashSet to store the names of part-time students
     Set<String> ptStudentName = new HashSet<>();
-    Map<String, int[]> ftStudentExamScore = new HashMap<>();
+    // Create a HashMap to store the exam scores of full-time students
+    Map<String, int[]> ftStudentExamScores = new HashMap<>();
 
     Session(int avgQS) {
         avgQuizScore = new int[avgQS];
     }
 
+    // Add related info of full-time students to proper HashMaps
     public void addFTStudent(String name, int[] quizScore, int[] examScore) {
         FTStudent ftStudent = new FTStudent(name, quizScore, examScore);
-        allQuizScore.put(name, quizScore);
-        ftStudentExamScore.put(name, examScore);
+        allQuizScores.put(name, quizScore);
+        ftStudentExamScores.put(name, examScore);
     }
 
+    // Add related info of part-time students to proper HashMap / HashSet
     public void addPTStudent(String name, int[] quizScore) {
         PTStudent ptStudent = new PTStudent(name, quizScore);
-        allQuizScore.put(name, quizScore);
+        allQuizScores.put(name, quizScore);
         ptStudentName.add(name);
     }
 
+    // Calculate average quiz scores per student for the whole class
     public double getAvgQuizScore(String name) {
-        // Calculate average quiz scores per student for the whole class
-        int[] currQuizScore = allQuizScore.get(name);
+        int[] currQuizScore = allQuizScores.get(name);
         int totalScore = 0;
 
         for (int i = 0; i < currQuizScore.length; i++) {
@@ -34,10 +39,10 @@ public class Session {
         return totalScore / currQuizScore.length;
     }
 
+    // Print the list of quiz scores in ascending order for one session
     public void printQuizScore() {
-        // Print the list of quiz scores in ascending order for one session
         int j = 0;
-        for (String student : allQuizScore.keySet()) {
+        for (String student : allQuizScores.keySet()) {
             avgQuizScore[j++] = (int) getAvgQuizScore(student);
         }
 
@@ -52,8 +57,8 @@ public class Session {
         System.out.println();
     }
 
+    // Print names of part-time students
     public void printPTStudentName() {
-        // Print names of part-time students
         System.out.println("Print names of part-time students: ");
 
         for (String partTime : ptStudentName) {
@@ -63,13 +68,14 @@ public class Session {
         System.out.println();
     }
 
+    // Print exam scores of full-time students
     public void printFTStudentExamScore() {
         // Print exam scores of full-time students
         System.out.println("Print two exam scores of full-time students: ");
 
-        for (String fullTime : ftStudentExamScore.keySet()) {
+        for (String fullTime : ftStudentExamScores.keySet()) {
             System.out.print("The two exam scores of " + fullTime + " are: ");
-            for (int exam : ftStudentExamScore.get(fullTime)) {
+            for (int exam : ftStudentExamScores.get(fullTime)) {
                 System.out.print(exam + " ");
             }
             System.out.println();
